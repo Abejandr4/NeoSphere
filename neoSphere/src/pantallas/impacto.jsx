@@ -59,7 +59,7 @@ const Impacto = () => {
 
   if (!inputs || !initialResults || !recalculatedEffects) {
     return (
-      <div className="bg-blue-950 text-yellow-400 min-h-screen p-5 text-center flex items-center justify-center">
+      <div className="bg-blue-950 text-violet-500 min-h-screen p-5 text-center flex items-center justify-center">
         <p className="text-xl">Loading simulation data...</p>
       </div>
     );
@@ -144,7 +144,7 @@ const Impacto = () => {
       case "Crater":
         return (
           <div className="space-y-1 text-sm pt-2">
-            <p className="font-medium text-red-600 text-lg">
+            <p className="font-medium text-red-500 text-lg">
               !!Red circle on the map is the size of the crater!!
             </p>
             <p className="font-medium">
@@ -278,7 +278,7 @@ const Impacto = () => {
       className={`p-3 text-lg font-semibold rounded-xl transition-all shadow-md w-full 
         ${
           selectedEffect === name
-            ? "bg-yellow-500 text-black"
+            ? "bg-violet-500 text-black"
             : "bg-gray-800 hover:bg-gray-700 text-white"
         }
       `}
@@ -296,7 +296,7 @@ const Impacto = () => {
       <div className="bg-gray-900 rounded-xl shadow-2xl p-4 sm:p-6">
         {/* Header con texto dinámico */}
         <header className="px-0 sm:px-10 py-10 border-b border-gray-800 mb-1">
-          <h1 className="text-3xl font-bold tracking-widest text-yellow-400">
+          <h1 className="text-3xl font-bold tracking-widest text-violet-500">
             Skyfall X | Results
           </h1>
 
@@ -319,7 +319,7 @@ const Impacto = () => {
           {/* Columna 1: Mapa y Energía */}
           <div className="col-span-1 space-y-6">
             <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
-              <h2 className="text-xl font-bold mb-3 text-yellow-400">
+              <h2 className="text-xl font-bold mb-3 text-violet-500">
                 Impact Zone:{" "}
                 <span className="text-white text-2xl">{displayData.zone}</span>
               </h2>
@@ -364,7 +364,7 @@ const Impacto = () => {
             </div>
 
             <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
-              <h2 className="text-xl font-bold mb-2 text-yellow-400">
+              <h2 className="text-xl font-bold mb-2 text-violet-500">
                 Total Energy Released:
               </h2>
               <p className="text-4xl font-extrabold text-white">
@@ -375,7 +375,7 @@ const Impacto = () => {
 
           {/* Columna 2: Detalles del Impacto */}
           <div className="col-span-1 space-y-5 bg-gray-800 p-6 rounded-xl shadow-xl">
-            <h2 className="text-xl font-bold text-yellow-400">
+            <h2 className="text-xl font-bold text-violet-500">
               Details of the Impact at a Distance
             </h2>
 
@@ -384,7 +384,7 @@ const Impacto = () => {
                 <span className="text-xl font-medium">
                   Distance from the observer
                 </span>
-                <span className="text-3xl font-bold text-yellow-300">
+                <span className="text-3xl font-bold text-violet-500">
                   {displayData.currentDistanceKm} km
                 </span>
               </div>
@@ -394,21 +394,21 @@ const Impacto = () => {
                 max="100"
                 value={distanceSliderValue}
                 onChange={(e) => setDistanceSliderValue(Number(e.target.value))}
-                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
 
             <div className="space-y-1 pt-3 border-t border-gray-700">
               <p className="text-xl font-medium">Selected effect</p>
-              <p className="text-3xl font-bold text-yellow-500">
+              <p className="text-3xl font-bold text-violet-500">
                 {selectedEffect}
               </p>
             </div>
 
-            <div className="min-h-[120px]">{renderEffectDetails()}</div>
+            <div className="min-h-30">{renderEffectDetails()}</div>
 
             <div className="space-y-2 pt-4 border-t border-gray-700">
-              <h3 className="text-xl font-bold text-yellow-400">
+              <h3 className="text-xl font-bold text-violet-500">
                 Seismic Effects (a {displayData.currentDistanceKm} km)
               </h3>
               <p className="text-4xl font-extrabold text-red-500">
@@ -431,7 +431,7 @@ const Impacto = () => {
 
           {/* Columna 3: Botones de Fenómeno */}
           <div className="col-span-1 flex flex-col space-y-4 bg-gray-800 p-6 rounded-xl shadow-xl">
-            <h2 className="text-xl font-bold text-yellow-400">
+            <h2 className="text-xl font-bold text-violet-500">
               See Details by Phenomenon
             </h2>
 

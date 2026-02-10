@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import DomeGallery from "../components/DomeGallery";
 import { HoverBorderGradient } from "../components/hover-border-gradient";
 
 // CORRECCIÓN 1: El nombre del componente debe ser con mayúscula inicial (PascalCase).

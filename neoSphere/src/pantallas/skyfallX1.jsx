@@ -18,22 +18,24 @@ L.Icon.Default.mergeOptions({
 
 // Rangos de densidad en kg/m³
 const DENSITY_RANGES = {
-  Rocky: { min: 2000, max: 3000, initial: 2500 },
-  Metallic: { min: 7000, max: 8000, initial: 7500 },
+  Roca: { min: 2000, max: 3000, initial: 2500 },
+  Metálica: { min: 7000, max: 8000, initial: 7500 },
 };
 
 const SkyfallX1 = () => {
   const [diameter, setDiameter] = useState(2500); // metros
   const [speed, setSpeed] = useState(17.5); // km/s
   const [angle, setAngle] = useState(45); // grados
-  const [composition, setComposition] = useState("Rocky");
-  const [density, setDensity] = useState(DENSITY_RANGES.Rocky.initial);
+  const [composition, setComposition] = useState("Roca");
+  const [density, setDensity] = useState(DENSITY_RANGES.Roca.initial);
   const navigate = useNavigate();
   const position = [19.0433, -98.2022]; // Coordenadas de Puebla, México
 
   useEffect(() => {
     setDensity(DENSITY_RANGES[composition].initial);
   }, [composition]);
+
+  const [isLaunched, setIsLaunched] = useState(false);
 
   const handleLaunch = () => {
     const simParams = {
@@ -62,75 +64,69 @@ const SkyfallX1 = () => {
 
   return (
     // Se mantiene el padding inferior grande (pb-20) para el espacio en la página
-    <div className="bg-black text-white min-h-screen p-10 pb-20">
+    <div className="bg-black text-white h-screen p-10 pb-20 flex flex-col overflow-y-auto">
       {/* Título */}
       <header className="px-0 sm:px-10 py-5 border-b border-gray-800">
-        <h1 className="text-2xl font-bold tracking-widest text-yellow-400">
-          Skyfall X | Configuration
+        <h1 className="text-2xl font-bold tracking-widest text-violet-500">
+          Simula el impacto de un asteroide
         </h1>
-        <p className="mt-2 text-xl">
-          <TextType
-            text={[
-              "Natural objects that encounter the Earth are either asteroids or comets. Asteroids are made of rock or iron and typically collide with the Earth’s atmosphere at velocities of 12–20 km/s. ",
-            ]}
-            typingSpeed={30}
-            pauseDuration={20000}
-            showCursor={true}
-            cursorCharacter="|"
-          />
-        </p>
       </header>
 
       {/* Contenedor principal de los recuadros de 2 columnas */}
       <div className="flex flex-col md:flex-row gap-6">
+
+        {/*grid vertical */}
+        <div className="w-1/2 flex flex-col gap-4">
+
         {/* Sección izquierda: Imagen y parámetros */}
         {/* AJUSTE CLAVE 1: Limito la altura del recuadro izquierdo */}
-        <div className="w-full md:w-1/3 bg-gray-900 rounded-lg p-4 border-2 border-yellow-400 h-fit max-h-[85vh]">
+        <div className="h-fit max-h-[85vh] w-auto md:w-1/3 bg-gray-900 rounded-lg p-4 border-2 border-violet-500">
           <div className="flex justify-center mb-5 ">
             <img
               src={asteroidImage}
               alt="Asteroid"
               // CLASES CORREGIDAS Y AUMENTADAS: Usando valores válidos de Tailwind.
-              className="w-360 h-90 object-contain"
+              className="object-contain transition-all duration-150"
+              style={{ 
+                width: `${diameter / 20}px`, 
+                height: 'auto' 
+              }}
             />
           </div>
-          <p className="text-center text-2xl mb-5 font-bold text-yellow-400">
-            Impactor
-          </p>
-          <h3 className="text-xl border-b border-yellow-400 pb-1 mb-2">
-            Current parameters
-          </h3>
-          <ul className="space-y-2 text-2xl mb-2">
-            <li>
-              Diameter: <strong>{diameter} m</strong>
-            </li>
-            <li>
-              Speed: <strong>{speed} km/s</strong>
-            </li>
-            <li>
-              Angle: <strong>{angle}°</strong>
-            </li>
-            <li>
-              Composition: <strong>{composition.toUpperCase()}</strong>
-            </li>
-            <li>
-              Density: <strong>{density} kg/m³</strong>
-            </li>
-            <li>
-              Object type: <strong>Asteroid</strong>
-            </li>
-          </ul>
+
         </div>
 
-        {/* Sección derecha: Controles y mapa */}
+        {/* Mapa */}
+        {!isLaunched && (
+          <div className="w-full md:w-1/3 bg-gray-900 rounded-lg p-4 border-2 border-violet-500 h-fit max-h-[85vh]">
+            <div className="h-50 w-auto mb-4 rounded-lg overflow-hidden border border-gray-700">
+              <MapContainer
+                center={position}
+                zoom={12}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; OpenStreetMap contributors'
+                />
+                <Marker position={position}>
+                  <Popup>Puebla, México</Popup>
+                </Marker>
+              </MapContainer>
+            </div>
+          </div>
+        )}
+      </div>
+
+        {/* Sección derecha: Controles*/}
         {/* AJUSTE CLAVE 2: Limito la altura del recuadro derecho */}
-        <div className="w-full md:w-2/3 bg-gray-900 rounded-lg p-4 border-2 border-yellow-400 h-fit max-h-[85vh]">
+        <div className="h-fit max-h-[85vh] w-auto md:w-2/3 bg-gray-900 rounded-lg p-4 border-2 border-violet-500">
           {/* Controles */}
           <div className="space-y-2 mb-6">
             {/* Slider para diámetro */}
             <div>
-              <label className="block mb-1 text-yellow-400 text-xl">
-                Size (Diameter: {diameter} m)
+              <label className="block mb-1 text-violet-500 text-xl">
+                Tamaño (Diámetro: {diameter} m)
               </label>
               <input
                 type="range"
@@ -139,14 +135,14 @@ const SkyfallX1 = () => {
                 step="10"
                 value={diameter}
                 onChange={(e) => setDiameter(Number(e.target.value))}
-                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
+                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-cyan-300"
               />
             </div>
 
             {/* Slider para velocidad */}
             <div>
-              <label className="block mb-1 text-yellow-400 text-xl">
-                Speed (Impact Speed: {speed} km/s)
+              <label className="block mb-1 text-violet-500 text-xl">
+                Velocidad (Velocidad de impacto: {speed} km/s)
               </label>
               <input
                 type="range"
@@ -155,14 +151,14 @@ const SkyfallX1 = () => {
                 step="0.5"
                 value={speed}
                 onChange={(e) => setSpeed(Number(e.target.value))}
-                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
+                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-cyan-300"
               />
             </div>
 
             {/* Slider para ángulo */}
             <div>
-              <label className="block mb-1 text-yellow-400 text-xl">
-                Angle of Impact ({angle}°)
+              <label className="block mb-1 text-violet-500 text-xl">
+                Ángulo de impacto ({angle}°)
               </label>
               <input
                 type="range"
@@ -171,20 +167,20 @@ const SkyfallX1 = () => {
                 step="1"
                 value={angle}
                 onChange={(e) => setAngle(Number(e.target.value))}
-                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-red-500"
+                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-cyan-300"
               />
               <p className="text-base text-gray-400 mt-1 ">
-                (90° is vertical impact)
+                (90° es el impacto vertical)
               </p>
             </div>
 
             {/* Botones para composición */}
             <div>
-              <label className="block mb-1 text-yellow-400 text-xl">
-                Composition
+              <label className="block mb-1 text-violet-500 text-xl">
+                Composición
               </label>
               <div className="flex gap-3 mt-2">
-                {["Rocky", "Metallic"].map((type) => (
+                {["Roca", "Metálica"].map((type) => (
                   <button
                     key={type}
                     onClick={() => setComposition(type)}
@@ -202,8 +198,8 @@ const SkyfallX1 = () => {
 
             {/* Slider para densidad */}
             <div>
-              <label className="block mb-1 text-yellow-400 text-xl">
-                Density: <strong>{density} kg/m³</strong>
+              <label className="block mb-1 text-violet-500 text-xl">
+                Densidad: <strong>{density} kg/m³</strong>
               </label>
               <input
                 type="range"
@@ -213,43 +209,102 @@ const SkyfallX1 = () => {
                 value={density}
                 onChange={(e) => setDensity(Number(e.target.value))}
                 className={`w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer ${
-                  composition === "Metallic"
+                  composition === "Metálica"
                     ? "accent-gray-400"
-                    : "accent-yellow-400"
+                    : "accent-violet-500"
                 }`}
               />
               <p className="text-base text-gray-400 mt-1">
-                Range: {currentRange.min} – {currentRange.max} kg/m³
+                Rango: {currentRange.min} – {currentRange.max} kg/m³
               </p>
             </div>
           </div>
 
-          {/* Mapa */}
-          <div className="h-50 mb-4 rounded-lg overflow-hidden border border-gray-700">
-            <MapContainer
-              center={position}
-              zoom={12}
-              style={{ height: "100%", width: "100%" }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <Marker position={position}>
-                <Popup>Puebla, México</Popup>
-              </Marker>
-            </MapContainer>
-          </div>
-
-          {/* Botón de lanzamiento */}
-          <button
-            onClick={handleLaunch}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-lg transition"
-          >
-            Launch to Earth
-          </button>
         </div>
       </div>
+
+      {/* Botón de lanzamiento */}
+  {!isLaunched && (
+    <button 
+      onClick={() => setIsLaunched(true)}
+      className="w-full py-4 bg-yellow-400 text-black font-black uppercase rounded shadow-[0_0_20px_rgba(250,204,21,0.5)] hover:scale-105 transition-transform"
+    >
+      Lanzar
+    </button>
+  )}
+
+  {/* THE ALERT OVERLAY */}
+  {isLaunched && (
+    <div className="fixed inset-0 z-30 flex items-center justify-center p-4">
+      {/* 1. Dark Blurred Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        onClick={() => setIsLaunched(false)} // Clicking outside closes it
+      />
+
+      {/* Alert para parámetros*/}
+      <div className="relative w-full max-w-lg bg-gray-900 rounded-xl p-8 border-2 border-yellow-400 shadow-[0_0_50px_rgba(250,204,21,0.2)] animate-in fade-in zoom-in duration-300">
+        
+        {/* Imagen del asteroide */}
+        <div className="flex justify-center mb-6">
+          <img
+            src={asteroidImage}
+            alt="Asteroide"
+            className="w-48 h-48 object-contain drop-shadow-[0_0_20px_rgba(255,255,0,0.4)]"
+          />
+        </div>
+
+        <p className="text-center text-3xl mb-6 font-bold text-yellow-400 tracking-widest uppercase italic">
+          Asteroide
+        </p>
+
+        <h3 className="text-xl text-white border-b border-yellow-400/50 pb-2 mb-4 font-mono">
+          Parámetros 
+        </h3>
+
+        <ul className="grid grid-cols-1 gap-3 text-xl text-gray-200 mb-8 font-light">
+          <li className="flex justify-between border-b border-white/5 pb-1">
+            <span className="text-gray-400">Diámetro:</span> 
+            <span className="font-bold text-white">{diameter} m</span>
+          </li>
+          <li className="flex justify-between border-b border-white/5 pb-1">
+            <span className="text-gray-400">Velocidad:</span> 
+            <span className="font-bold text-white">{speed} km/s</span>
+          </li>
+          <li className="flex justify-between border-b border-white/5 pb-1">
+            <span className="text-gray-400">Ángulo:</span> 
+            <span className="font-bold text-white">{angle}°</span>
+          </li>
+          <li className="flex justify-between border-b border-white/5 pb-1">
+            <span className="text-gray-400">Compositción:</span> 
+            <span className="font-bold text-white uppercase">{composition}</span>
+          </li>
+          <li className="flex justify-between">
+            <span className="text-gray-400">Densidad:</span> 
+            <span className="font-bold text-white">{density} kg/m³</span>
+          </li>
+        </ul>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 mt-20">
+          <button 
+            className="w-full py-4 bg-yellow-400 text-black font-black text-xl uppercase rounded hover:bg-yellow-300 transition-colors"
+            onClick={handleLaunch}
+          >
+            Lanzar
+          </button>
+          
+          <button 
+            onClick={() => setIsLaunched(false)}
+            className="w-full py-2 text-gray-500 hover:text-white transition-colors text-sm uppercase tracking-tighter"
+          >
+            Regresar
+          </button>
+        </div>
+    </div>
+  </div>
+)}
+      
     </div>
   );
 };
