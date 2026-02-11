@@ -11,30 +11,27 @@ import GravityVideo from "../assets/videos/Gravity.mp4"; // (Asumiendo que tiene
 // Esto se hace cambiando "watch?v=" por "embed/".
 const mitigationStrategies = [
   {
-    name: "MITIGATION",
-    title: "MITIGATION",
-
+    name: "MITIGACIÓN",
+    title: "MITIGACIÓN",
+    description: "Información general sobre defensa planetaria.",
     videoSrc: MitigationVideo, // <<-- ¡CAMBIA A URL EMBEBIDA!
   },
   {
-    name: "Surface Coating",
-    title: "Surface Coating:",
-    description:
-      "Cover part of the asteroid with a reflective or absorbent material to modify its thermal balance and take advantage of the Yarkovsky effect.",
+    name: "Recubrimiento",
+    title: "Recubrimiento",
+    description: "Modifica el equilibrio térmico (Efecto Yarkovsky).",
     videoSrc: SurfaceVideo, // <<-- ¡CAMBIA A URL EMBEBIDA!
   },
   {
-    name: "Kinetic Impact",
-    title: "Kinetic Impact:",
-    description:
-      " It consists of launching a massive spacecraft at high speed to collide with the asteroid and alter its trajectory.",
+    name: "Impacto Cinético",
+    title: "Impacto Cinético",
+    description: "Colisión directa para desviar la trayectoria.",
     videoSrc: KineticyVideo, // <<-- ¡CAMBIA A URL EMBEBIDA!
   },
   {
-    name: "Gravity Tractor",
-    title: "Gravity Tractor",
-    description:
-      "A spacecraft is positioned near the asteroid and uses its gravitational pull to gradually alter the asteroid’s trajectory.",
+    name: "Tractor Gravedad",
+    title: "Tractor Gravedad",
+    description: "Uso de atracción gravitatoria constante.",
     videoSrc: GravityVideo, // <<-- ¡CAMBIA A URL EMBEBIDA!
   },
 ];
@@ -59,82 +56,74 @@ const Resultados = () => {
 
   return (
     // Fondo Azul Oscuro
-    <div className="min-h-screen bg-blue-950 text-white font-sans p-9 flex flex-col items-center">
-      {/* Contenedor Principal de la Interfaz (Adaptado a video y botones) */}
-      <div className="w-full max-w-8xl bg-gray-900 rounded-xl shadow-2xl p-18">
-        <h2 className="text-5xl font-extrabold text-center text-yellow-400 mb-10">
-          Mitigation strategies
+    <div className="h-screen overflow-y-auto bg-blue-950 text-white font-sans p-4 md:p-8 flex flex-col items-center">
+      {/* Contenedor Principal (Más ancho para permitir la fila de 4) */}
+      <div className="w-full max-w-6xl bg-gray-900 rounded-xl shadow-2xl p-6 md:p-10 space-y-10">
+        
+        <h2 className="text-4xl font-extrabold text-center text-violet-500">
+          Estrategias de Mitigación
         </h2>
 
-        {/* Estructura de dos columnas */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
-          {/* Columna 1 (2/3 del ancho en grandes pantallas): Video Grande */}
-          <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-xl font-bold text-gray-400 border-b border-gray-700 pb-2 mb-4">
-              Explanation (Strategy: {activeStrategy})
-            </h3>
+        {/* --- SECCIÓN A: EL VIDEO --- */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-gray-400 border-b border-gray-700 pb-2">
+            Explicación (Estrategia: {activeStrategy})
+          </h3>
 
-            {/* Contenedor responsivo para el iframe de YouTube */}
-            <div className="relative overflow-hidden w-full h-0 pb-[56.25%] rounded-lg shadow-2xl border-4 border-gray-700">
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src={currentVideoUrl}
-                title="Video de Estrategia de Mitigación"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-
-            <p className="text-center text-gray-400 text-sm pt-2">
-              *The video plays embedded in the screen.
-            </p>
+          <div className="relative overflow-hidden w-auto h-1/3 pb-[56.25%] rounded-lg shadow-2xl border-4 border-gray-700">
+            <iframe
+              className="absolute top-0 left-0 w-full h-full"
+              src={currentVideoUrl}
+              title="Video de Estrategia de Mitigación"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
+        </div>
 
-          {/* Columna 2 (1/3 del ancho): Botones con más texto */}
-          <div className="lg:col-span-1 space-y-6">
-            <h3 className="text-xl font-bold text-gray-400 border-b border-gray-700 pb-2">
-              Select a Strategy
-            </h3>
+        {/* --- SECCIÓN B: ESTRATEGIAS EN UNA SOLA FILA --- */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-gray-400 border-b border-gray-700 pb-2">
+            Selecciona una Estrategia
+          </h3>
 
+          {/* Grid de 4 columnas en pantallas grandes, 2 en medianas y 1 en móvil */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {mitigationStrategies.map((strategy, index) => (
               <button
                 key={index}
                 onClick={() => handleButtonClick(strategy)}
-                className={`w-full text-left p-4 rounded-lg transition-all shadow-xl border-2 
+                className={`flex flex-col text-left p-4 rounded-lg transition-all shadow-lg border-2 h-full
                            ${
                              activeStrategy === strategy.name
-                               ? "bg-yellow-500 text-gray-900 border-yellow-500"
+                               ? "bg-violet-500 text-gray-900 border-violet-500"
                                : "bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
-                           }
-                           space-y-1`}
+                           }`}
               >
-                <div className="flex items-center space-x-2">
-                  <span className="text-2xl font-extrabold">
-                    {strategy.title}
-                  </span>
-                </div>
-                <p
-                  className={`text-base font-bold ${
-                    activeStrategy === strategy.name
-                      ? "text-gray-800"
-                      : "text-gray-400"
-                  }`}
-                >
+                <span className="text-lg font-extrabold mb-1 leading-tight">
+                  {strategy.title}
+                </span>
+                <p className={`text-xs font-medium leading-snug ${
+                    activeStrategy === strategy.name ? "text-gray-900" : "text-gray-400"
+                  }`}>
                   {strategy.description}
                 </p>
               </button>
             ))}
-
-            {/* Botón de Regreso */}
-            <button
-              onClick={() => navigate("/impacto")}
-              className="w-full p-5 text-2xl font-extrabold rounded-lg shadow-2xl transition-all bg-gray-700 hover:bg-gray-600 text-white mt-4"
-            >
-              Return to Simulation
-            </button>
           </div>
         </div>
+
+        {/* --- SECCIÓN C: BOTÓN DE REGRESO --- */}
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={() => navigate("/impacto")}
+            className="w-full md:w-1/2 p-4 text-xl font-extrabold rounded-lg shadow-2xl transition-all bg-gray-700 hover:bg-gray-600 text-white"
+          >
+            Regresar a la Simulación
+          </button>
+        </div>
+
       </div>
     </div>
   );

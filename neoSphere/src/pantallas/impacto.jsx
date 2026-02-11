@@ -292,7 +292,7 @@ const Impacto = () => {
   );
 
   return (
-    <div className="min-h-screen bg-blue-950 text-white font-sans p-4 sm:p-6">
+    <div className="h-screen overflow-y-auto bg-blue-950 text-white font-sans p-4 sm:p-6">
       <div className="bg-gray-900 rounded-xl shadow-2xl p-4 sm:p-6">
         {/* Header con texto dinámico */}
         <header className="px-0 sm:px-10 py-10 border-b border-gray-800 mb-1">
