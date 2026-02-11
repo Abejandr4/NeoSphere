@@ -84,7 +84,7 @@ const SkyfallX1 = () => {
           <div className="flex justify-center mb-5 ">
             <img
               src={asteroidImage}
-              alt="Asteroid"
+              alt="Asteroide"
               // CLASES CORREGIDAS Y AUMENTADAS: Usando valores válidos de Tailwind.
               className="object-contain transition-all duration-150"
               style={{ 
