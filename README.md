@@ -29,5 +29,9 @@ aceternity UI
 https://ui.aceternity.com/components/hover-border-gradient 
 npm i motion clsx tailwind-merge
 
+React icons
+https://react-icons.github.io/react-icons/
+npm install react-icons --save
+
 proyect in vite+ javascript
 
