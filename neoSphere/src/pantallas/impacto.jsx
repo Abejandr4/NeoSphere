@@ -32,16 +32,16 @@ const Impacto = () => {
 
   useEffect(() => {
     if (!initialResults || !inputs) {
-      console.error("Simulation parameters are missing. Redirecting.");
+      console.error("Faltan los parámetros de simulación. Redirigiendo.");
       navigate("/skyfallx-game");
     }
   }, [initialResults, inputs, navigate]);
 
   const [distanceSliderValue, setDistanceSliderValue] = useState(20);
-  const [selectedEffect, setSelectedEffect] = useState("Crater");
+  const [selectedEffect, setSelectedEffect] = useState("Cráter");
 
   // --- NUEVO: Estado para el texto del header ---
-  const [headerText, setHeaderText] = useState(["Text typing effect"]);
+  const [headerText, setHeaderText] = useState(["Efecto de escritura de texto"]);
 
   const currentDistanceKm = useMemo(
     () => (distanceSliderValue / 100) * MAX_DISTANCE_KM,
@@ -60,7 +60,7 @@ const Impacto = () => {
   if (!inputs || !initialResults || !recalculatedEffects) {
     return (
       <div className="bg-blue-950 text-violet-500 min-h-screen p-5 text-center flex items-center justify-center">
-        <p className="text-xl">Loading simulation data...</p>
+        <p className="text-xl">Cargando datos de la simulación...</p>
       </div>
     );
   }
@@ -98,7 +98,7 @@ const Impacto = () => {
   };
 
   const craterRadiusMeters =
-    scenario !== "Airburst" && crater.finalDiameter_m
+    scenario !== "Explosión Aérea" && crater.finalDiameter_m
       ? crater.finalDiameter_m / 2
       : 0;
 
@@ -110,7 +110,7 @@ const Impacto = () => {
     craterDetails: {
       finalDiameter: `${(crater.finalDiameter_m / 1000).toFixed(2)} km`,
       transientDiameter: `${(crater.transientDiameter_m / 1000).toFixed(2)} km`,
-      type: crater.type,
+      type: crater.type === "Simple" ? "Simple" : "Complejo",
     },
     seismicDetails: {
       magnitude: seismicEffects.richterMagnitude.toFixed(2),
@@ -124,73 +124,73 @@ const Impacto = () => {
   };
 
   const renderEffectDetails = useCallback(() => {
-    if (scenario === "Airburst") {
-      if (selectedEffect === "Crater")
+    if (scenario === "Explosión Aérea" || scenario === "Airburst") {
+      if (selectedEffect === "Cráter")
         return (
           <p className="text-base font-medium mt-2 text-white">
-            No crater is formed. Airburst at {(burstAltitude / 1000).toFixed(1)}{" "}
-            km altitude.
+            No se forma cráter. Explosión aérea a {(burstAltitude / 1000).toFixed(1)}{" "}
+            km de altitud.
           </p>
         );
-      if (selectedEffect === "Return of ejections")
+      if (selectedEffect === "Retorno de eyecciones")
         return (
           <p className="text-base font-medium mt-2 text-white">
-            There are no significant ejections due to the airburst.
+            No hay eyecciones significativas debido a la explosión aérea.
           </p>
         );
     }
 
     switch (selectedEffect) {
-      case "Crater":
+      case "Cráter":
         return (
           <div className="space-y-1 text-sm pt-2">
             <p className="font-medium text-red-500 text-lg">
-              !!Red circle on the map is the size of the crater!!
+              ¡El círculo rojo en el mapa es el tamaño del cráter!
             </p>
             <p className="font-medium">
-              Final Diameter:{" "}
+              Diámetro Final:{" "}
               <span className="font-bold text-white text-base">
                 {displayData.craterDetails.finalDiameter}
               </span>
             </p>
             <p className="font-medium">
-              Transient Diameter:{" "}
+              Diámetro Transitorio:{" "}
               <span className="font-bold text-white text-base">
                 {displayData.craterDetails.transientDiameter}
               </span>
             </p>
             <p className="font-medium">
-              Type:{" "}
+              Tipo:{" "}
               <span className="font-bold text-white text-base">
                 {displayData.craterDetails.type}
               </span>
             </p>
           </div>
         );
-      case "AirBlast":
+      case "Onda de Choque":
         return (
           <div className="space-y-1 text-sm pt-2">
             <p className="text-lg font-bold text-red-400">
               {airBlast.overpressure_Pa.toLocaleString()} Pa
             </p>
             <p className="font-medium">
-              Arrival time:{" "}
+              Tiempo de llegada:{" "}
               <span className="font-bold text-white text-base">
                 {airBlast.arrival_time_s.toFixed(1)} s
               </span>
             </p>
             <p className="font-medium">
-              Wind speed:{" "}
+              Velocidad del viento:{" "}
               <span className="font-bold text-white text-base">
                 {airBlast.wind_velocity_ms.toFixed(1)} m/s
               </span>
             </p>
             <p className="text-sm mt-2 text-red-400 font-bold">
-              Expected Damage: {airBlast.damageDescription}
+              Daño Esperado: {airBlast.damageDescription}
             </p>
           </div>
         );
-      case "Thermal Radiation":
+      case "Radiación Térmica":
         return (
           <div className="space-y-1 text-sm pt-2">
             <p className="text-lg font-bold text-red-400">
@@ -200,17 +200,17 @@ const Impacto = () => {
               J/m²
             </p>
             <p className="font-medium">
-              Fireball radius:{" "}
+              Radio de la bola de fuego:{" "}
               <span className="font-bold text-white text-base">
                 {thermalRadiation.fireballRadius_km.toFixed(2)} km
               </span>
             </p>
             <p className="text-sm mt-2 text-red-400 font-bold">
-              Ignition Effects: {thermalRadiation.ignitionEffects}
+              Efectos de Ignición: {thermalRadiation.ignitionEffects}
             </p>
           </div>
         );
-      case "Return of ejections":
+      case "Retorno de eyecciones":
         if (
           typeof ejecta.thickness_m === "undefined" ||
           ejecta.thickness_m === 0
@@ -224,13 +224,13 @@ const Impacto = () => {
         return (
           <div className="space-y-1 text-sm pt-2">
             <p className="font-medium">
-              Layer thickness:{" "}
+              Grosor de la capa:{" "}
               <span className="font-bold text-white text-base">
                 {(ejecta.thickness_m * 1000).toFixed(2)} mm
               </span>
             </p>
             <p className="font-medium">
-              Average fragment size:{" "}
+              Tamaño promedio de fragmentos:{" "}
               <span className="font-bold text-white text-base">
                 {ejecta.meanFragmentSize_mm.toFixed(2)} mm
               </span>
@@ -240,7 +240,7 @@ const Impacto = () => {
       default:
         return (
           <p className="text-base font-medium mt-2 text-white">
-            Select an effect to view details.
+            Selecciona un efecto para ver los detalles.
           </p>
         );
     }
@@ -256,20 +256,20 @@ const Impacto = () => {
   ]);
 
   const effectButtons = [
-    { name: "Crater", label: "Crater" },
-    { name: "AirBlast", label: "AirBlast" },
-    { name: "Return of ejections", label: "Return of ejections" },
-    { name: "Thermal Radiation", label: "Thermal Radiation" },
+    { name: "Cráter", label: "Cráter" },
+    { name: "Onda de Choque", label: "Onda de Choque" },
+    { name: "Retorno de eyecciones", label: "Retorno de eyecciones" },
+    { name: "Radiación Térmica", label: "Radiación Térmica" },
   ];
 
   // --- NUEVO: Textos para el header según el botón ---
   const headerTextsByEffect = {
-    Crater: [
-      "This is the crater effect, You can see in the map a red circle thats the diameter of the Crater!!",
+    "Cráter": [
+      "Este es el efecto del cráter. ¡Puedes ver en el mapa un círculo rojo que representa el diámetro del impacto!",
     ],
-    AirBlast: ["Air blast is destructive!"],
-    "Return of ejections": ["Ejected material returns to the ground."],
-    "Thermal Radiation": ["Thermal radiation can ignite fires."],
+    "Onda de Choque": ["¡La onda de choque expansiva es destructiva!"],
+    "Retorno de eyecciones": ["El material eyectado regresa al suelo."],
+    "Radiación Térmica": ["La radiación térmica puede provocar incendios."],
   };
 
   const renderEffectButton = ({ name, label }) => (
@@ -297,21 +297,21 @@ const Impacto = () => {
         {/* Header con texto dinámico */}
         <header className="px-0 sm:px-10 py-10 border-b border-gray-800 mb-1">
           <h1 className="text-3xl font-bold tracking-widest text-violet-500">
-            Skyfall X | Results
+            Skyfall X | Resultados
           </h1>
 
-          <p className="mt-2 text-2xl">
+          <div className="mt-2 text-2xl">
             <TextType
               text={[
-                "Small impactors are disrupted in the atmosphere and form no crater, while larger objects retain their kinetic energy and, upon impact, create large craters. The impact releases energy that generates high pressures and temperatures, forming a shock wave that fractures the target and excavates a transient crater, which then collapses under gravity to form the final crater. ",
-                "The impact ejects rock debris that covers the surrounding terrain and disperses as dust and larger bombs that may form small secondary craters. In addition, the energy is converted into thermal energy, seismic energy, and kinetic energy of the target and atmosphere, producing a fireball, ground shaking, high air pressures, and violent winds. ",
+                "Los impactores pequeños se desintegran en la atmósfera y no forman cráteres, mientras que los objetos más grandes conservan su energía cinética y, al impactar, crean grandes cráteres. El impacto libera energía que genera altas presiones y temperaturas, formando una onda de choque que fractura el objetivo y excava un cráter transitorio, que luego colapsa bajo la gravedad para formar el cráter final.",
+                "El impacto expulsa escombros rocosos que cubren el terreno circundante y se dispersan como polvo y fragmentos mayores que pueden formar pequeños cráteres secundarios. Además, la energía se convierte en energía térmica, sísmica y cinética del objetivo y la atmósfera, produciendo una bola de fuego, sacudidas del terreno, altas presiones de aire y vientos violentos.",
               ]}
               typingSpeed={35}
               pauseDuration={7000}
               showCursor={true}
               cursorCharacter="|"
             />
-          </p>
+          </div>
         </header>
 
         {/* Grid principal */}
@@ -320,7 +320,7 @@ const Impacto = () => {
           <div className="col-span-1 space-y-6">
             <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
               <h2 className="text-xl font-bold mb-3 text-violet-500">
-                Impact Zone:{" "}
+                Zona de Impacto:{" "}
                 <span className="text-white text-2xl">{displayData.zone}</span>
               </h2>
               <div className="h-96 rounded-lg overflow-hidden border border-red-500/50 shadow-md">
@@ -331,10 +331,10 @@ const Impacto = () => {
                   className="h-full w-full"
                 >
                   <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-                  {scenario !== "Airburst" && craterRadiusMeters > 0 ? (
+                  {(scenario !== "Airburst" && scenario !== "Explosión Aérea") && craterRadiusMeters > 0 ? (
                     <Circle
                       center={IMPACT_POSITION}
                       radius={craterRadiusMeters}
@@ -346,16 +346,16 @@ const Impacto = () => {
                       }}
                     >
                       <Popup>
-                        Estimated impact crater (Diameter:{" "}
+                        Cráter de impacto estimado (Diámetro:{" "}
                         {((craterRadiusMeters * 2) / 1000).toFixed(2)} km)
                       </Popup>
                     </Circle>
                   ) : (
                     <Marker position={IMPACT_POSITION}>
                       <Popup>
-                        {scenario === "Airburst"
-                          ? "Airburst over Puebla."
-                          : "Surface Impact."}
+                        {scenario === "Explosión Aérea" || scenario === "Airburst"
+                          ? "Explosión aérea sobre Puebla."
+                          : "Impacto en superficie."}
                       </Popup>
                     </Marker>
                   )}
@@ -365,7 +365,7 @@ const Impacto = () => {
 
             <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
               <h2 className="text-xl font-bold mb-2 text-violet-500">
-                Total Energy Released:
+                Energía Total Liberada:
               </h2>
               <p className="text-4xl font-extrabold text-white">
                 {displayData.totalEnergy}
@@ -376,13 +376,13 @@ const Impacto = () => {
           {/* Columna 2: Detalles del Impacto */}
           <div className="col-span-1 space-y-5 bg-gray-800 p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold text-violet-500">
-              Details of the Impact at a Distance
+              Detalles del Impacto a Distancia
             </h2>
 
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="text-xl font-medium">
-                  Distance from the observer
+                  Distancia del observador
                 </span>
                 <span className="text-3xl font-bold text-violet-500">
                   {displayData.currentDistanceKm} km
@@ -399,7 +399,7 @@ const Impacto = () => {
             </div>
 
             <div className="space-y-1 pt-3 border-t border-gray-700">
-              <p className="text-xl font-medium">Selected effect</p>
+              <p className="text-xl font-medium">Efecto seleccionado</p>
               <p className="text-3xl font-bold text-violet-500">
                 {selectedEffect}
               </p>
@@ -409,19 +409,19 @@ const Impacto = () => {
 
             <div className="space-y-2 pt-4 border-t border-gray-700">
               <h3 className="text-xl font-bold text-violet-500">
-                Seismic Effects (a {displayData.currentDistanceKm} km)
+                Efectos Sísmicos (a {displayData.currentDistanceKm} km)
               </h3>
               <p className="text-4xl font-extrabold text-red-500">
                 MAG: {displayData.seismicDetails.magnitude}
               </p>
               <p className="text-base text-gray-400">
-                Seismic magnitude (Richter scale):{" "}
+                Magnitud sísmica (Escala Richter):{" "}
                 <span className="font-bold">
                   {displayData.seismicDetails.richterScale}
                 </span>
               </p>
               <p className="text-base text-gray-400">
-                Modified Mercalli Intensity:{" "}
+                Intensidad Mercalli Modificada:{" "}
                 <span className="font-bold">
                   {displayData.seismicDetails.mercalliIntensity}
                 </span>
@@ -432,7 +432,7 @@ const Impacto = () => {
           {/* Columna 3: Botones de Fenómeno */}
           <div className="col-span-1 flex flex-col space-y-4 bg-gray-800 p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold text-violet-500">
-              See Details by Phenomenon
+              Ver Detalles por Fenómeno
             </h2>
 
             <div className="space-y-4">
@@ -443,7 +443,7 @@ const Impacto = () => {
               className="mt-6 p-5 text-2xl font-extrabold rounded-xl shadow-2xl transition-all bg-gray-700 hover:bg-gray-600 text-white"
               onClick={() => navigate("/result")}
             >
-              Summary
+              Resumen Final
             </button>
           </div>
         </div>

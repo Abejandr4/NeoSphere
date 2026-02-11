@@ -66,21 +66,21 @@
       // Se mantiene el padding inferior grande (pb-20) para el espacio en la página
       <div className="bg-black text-white h-screen p-10 pb-20 flex flex-col overflow-y-auto">
         {/* Título */}
-        <header className="px-0 sm:px-10 py-5 border-b border-gray-800">
+        <header className="px-0 sm:px-10 py-5 border-b border-gray-800 flex-none">
           <h1 className="text-2xl font-bold tracking-widest text-violet-500">
             Simula el impacto de un asteroide
           </h1>
         </header>
 
         {/* Contenedor principal de los recuadros de 2 columnas */}
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col md:flex-row gap-6 mt-6 flex-1">
 
           {/*grid vertical */}
-          <div className="w-1/2 flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4">
 
           {/* Sección izquierda: Imagen y parámetros */}
           {/* AJUSTE CLAVE 1: Limito la altura del recuadro izquierdo */}
-          <div className="h-fit max-h-[85vh] w-auto md:w-1/3 bg-gray-900 rounded-lg p-4 border-2 border-violet-500">
+          <div className="h-fit max-h-[85vh] w-auto bg-gray-900 rounded-lg p-4 border-2 border-violet-500">
             <div className="flex justify-center mb-5 ">
               <img
                 src={asteroidImage}
@@ -98,7 +98,7 @@
 
           {/* Mapa */}
           {!isLaunched && (
-            <div className="w-full md:w-1/3 bg-gray-900 rounded-lg p-4 border-2 border-violet-500 h-fit max-h-[85vh]">
+            <div className="w-full bg-gray-900 rounded-lg p-4 border-2 border-violet-500 h-fit max-h-[85vh]">
               <div className="h-50 w-auto mb-4 rounded-lg overflow-hidden border border-gray-700">
                 <MapContainer
                   center={position}
@@ -120,7 +120,7 @@
 
           {/* Sección derecha: Controles*/}
           {/* AJUSTE CLAVE 2: Limito la altura del recuadro derecho */}
-          <div className="h-fit max-h-[85vh] w-auto md:w-2/3 bg-gray-900 rounded-lg p-4 border-2 border-violet-500">
+          <div className="h-fit max-h-[85vh] w-full bg-gray-900 rounded-lg p-4 border-2 border-violet-500">
             {/* Controles */}
             <div className="space-y-2 mb-6">
               {/* Slider para diámetro */}
@@ -184,10 +184,10 @@
                     <button
                       key={type}
                       onClick={() => setComposition(type)}
-                      className={`px-3 py-2 border border-yellow-400 rounded ${
+                      className={`px-3 py-2 border border-blue-600 rounded ${
                         composition === type
-                          ? "bg-yellow-400 text-black"
-                          : "bg-transparent text-yellow-400"
+                          ? "bg-blue-600 text-black"
+                          : "bg-transparent text-blue-600"
                       }`}
                     >
                       {type}
@@ -227,7 +227,7 @@
     {!isLaunched && (
       <button 
         onClick={() => setIsLaunched(true)}
-        className="w-full py-4 bg-yellow-400 text-black font-black uppercase rounded shadow-[0_0_20px_rgba(250,204,21,0.5)] hover:scale-105 transition-transform"
+        className="w-full py-4 bg-blue-600 text-black font-black uppercase rounded shadow-[0_0_20px_rgba(250,204,21,0.5)] hover:scale-105 transition-transform"
       >
         Lanzar
       </button>
@@ -243,9 +243,9 @@
         />
 
         {/* Alert para parámetros*/}
-        <div className="relative w-full max-w-lg bg-gray-900 rounded-xl p-8 border-2 border-yellow-400 shadow-[0_0_50px_rgba(250,204,21,0.2)] animate-in fade-in zoom-in duration-300">
+        <div className="relative h-2/3 w-full overflow-auto max-w-lg bg-gray-900 rounded-xl p-8 border-2 border-blue-600 shadow-[0_0_50px_rgba(250,204,21,0.2)] animate-in fade-in zoom-in duration-300">
           
-          {/* Imagen del asteroide */}
+          {/* Imagen del asteroide del cuadro de confirmacion*/}
           <div className="flex justify-center mb-6">
             <img
               src={asteroidImage}
@@ -254,11 +254,11 @@
             />
           </div>
 
-          <p className="text-center text-3xl mb-6 font-bold text-yellow-400 tracking-widest uppercase italic">
+          <p className="text-center text-3xl mb-6 font-bold text-blue-600 tracking-widest uppercase italic">
             Asteroide
           </p>
 
-          <h3 className="text-xl text-white border-b border-yellow-400/50 pb-2 mb-4 font-mono">
+          <h3 className="text-xl text-white border-b border-blue-600/50 pb-2 mb-4 font-mono">
             Parámetros 
           </h3>
 
@@ -288,7 +288,7 @@
           {/* Action Buttons */}
           <div className="flex flex-col gap-3 mt-20">
             <button 
-              className="w-full py-4 bg-yellow-400 text-black font-black text-xl uppercase rounded hover:bg-yellow-300 transition-colors"
+              className="w-full py-4 bg-blue-600 text-black font-black text-xl uppercase rounded hover:bg-yellow-300 transition-colors"
               onClick={handleLaunch}
             >
               Lanzar
