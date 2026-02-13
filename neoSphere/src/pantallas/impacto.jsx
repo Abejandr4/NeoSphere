@@ -297,154 +297,151 @@ const Impacto = () => {
         {/* Header con texto dinámico */}
         <header className="px-0 sm:px-10 py-10 border-b border-gray-800 mb-1">
           <h1 className="text-3xl font-bold tracking-widest text-violet-500">
-            Skyfall X | Resultados
+            Resultados de la simulación
           </h1>
 
           <div className="mt-2 text-2xl">
-            <TextType
-              text={[
-                "Los impactores pequeños se desintegran en la atmósfera y no forman cráteres, mientras que los objetos más grandes conservan su energía cinética y, al impactar, crean grandes cráteres. El impacto libera energía que genera altas presiones y temperaturas, formando una onda de choque que fractura el objetivo y excava un cráter transitorio, que luego colapsa bajo la gravedad para formar el cráter final.",
-                "El impacto expulsa escombros rocosos que cubren el terreno circundante y se dispersan como polvo y fragmentos mayores que pueden formar pequeños cráteres secundarios. Además, la energía se convierte en energía térmica, sísmica y cinética del objetivo y la atmósfera, produciendo una bola de fuego, sacudidas del terreno, altas presiones de aire y vientos violentos.",
-              ]}
-              typingSpeed={35}
-              pauseDuration={7000}
-              showCursor={true}
-              cursorCharacter="|"
-            />
+            <p>Los impactores pequeños se desintegran en la atmósfera y no forman cráteres, mientras que los objetos más grandes conservan su energía cinética y, al impactar, crean grandes cráteres. El impacto libera energía que genera altas presiones y temperaturas, formando una onda de choque que fractura el objetivo y excava un cráter transitorio, que luego colapsa bajo la gravedad para formar el cráter final.</p>
           </div>
         </header>
 
-        {/* Grid principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {/* Columna 1: Mapa y Energía */}
-          <div className="col-span-1 space-y-6">
-            <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
-              <h2 className="text-xl font-bold mb-3 text-violet-500">
-                Zona de Impacto:{" "}
-                <span className="text-white text-2xl">{displayData.zone}</span>
+        {/* Grid vertical */}
+        <div className="flex-row h-full w-full grid-cols-3">
+            {/* Columna 3: Botones de Fenómeno */}
+            <div className="col-span-1 flex flex-col space-y-4 bg-gray-800 p-6 rounded-xl shadow-xl">
+              <h2 className="text-xl font-bold text-violet-500">
+                Ver Detalles por Fenómeno
               </h2>
-              <div className="h-96 rounded-lg overflow-hidden border border-red-500/50 shadow-md">
-                <MapContainer
-                  center={displayData.mapCenter}
-                  zoom={displayData.mapZoom}
-                  scrollWheelZoom={false}
-                  className="h-full w-full"
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  {(scenario !== "Airburst" && scenario !== "Explosión Aérea") && craterRadiusMeters > 0 ? (
-                    <Circle
-                      center={IMPACT_POSITION}
-                      radius={craterRadiusMeters}
-                      pathOptions={{
-                        color: "red",
-                        fillColor: "#f03",
-                        fillOpacity: 0.5,
-                        weight: 2,
-                      }}
-                    >
-                      <Popup>
-                        Cráter de impacto estimado (Diámetro:{" "}
-                        {((craterRadiusMeters * 2) / 1000).toFixed(2)} km)
-                      </Popup>
-                    </Circle>
-                  ) : (
-                    <Marker position={IMPACT_POSITION}>
-                      <Popup>
-                        {scenario === "Explosión Aérea" || scenario === "Airburst"
-                          ? "Explosión aérea sobre Puebla."
-                          : "Impacto en superficie."}
-                      </Popup>
-                    </Marker>
-                  )}
-                </MapContainer>
+
+              <div className="space-y-4">
+                {effectButtons.map(renderEffectButton)}
               </div>
             </div>
 
-            <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
-              <h2 className="text-xl font-bold mb-2 text-violet-500">
-                Energía Total Liberada:
-              </h2>
-              <p className="text-4xl font-extrabold text-white">
-                {displayData.totalEnergy}
-              </p>
-            </div>
-          </div>
-
-          {/* Columna 2: Detalles del Impacto */}
-          <div className="col-span-1 space-y-5 bg-gray-800 p-6 rounded-xl shadow-xl">
-            <h2 className="text-xl font-bold text-violet-500">
-              Detalles del Impacto a Distancia
-            </h2>
-
-            <div className="space-y-1">
-              <div className="flex justify-between items-center">
-                <span className="text-xl font-medium">
-                  Distancia del observador
-                </span>
-                <span className="text-3xl font-bold text-violet-500">
-                  {displayData.currentDistanceKm} km
-                </span>
+          {/* Grid horizontal */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            {/* Columna 1: Mapa y Energía */}
+            <div className="col-span-1 space-y-6">
+              <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
+                <h2 className="text-xl font-bold mb-3 text-violet-500">
+                  Zona de Impacto:{" "}
+                  <span className="text-white text-2xl">{displayData.zone}</span>
+                </h2>
+                <div className="h-96 rounded-lg overflow-hidden border border-red-500/50 shadow-md">
+                  <MapContainer
+                    center={displayData.mapCenter}
+                    zoom={displayData.mapZoom}
+                    scrollWheelZoom={false}
+                    className="h-full w-full"
+                  >
+                    <TileLayer
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {(scenario !== "Airburst" && scenario !== "Explosión Aérea") && craterRadiusMeters > 0 ? (
+                      <Circle
+                        center={IMPACT_POSITION}
+                        radius={craterRadiusMeters}
+                        pathOptions={{
+                          color: "red",
+                          fillColor: "#f03",
+                          fillOpacity: 0.5,
+                          weight: 2,
+                        }}
+                      >
+                        <Popup>
+                          Cráter de impacto estimado (Diámetro:{" "}
+                          {((craterRadiusMeters * 2) / 1000).toFixed(2)} km)
+                        </Popup>
+                      </Circle>
+                    ) : (
+                      <Marker position={IMPACT_POSITION}>
+                        <Popup>
+                          {scenario === "Explosión Aérea" || scenario === "Airburst"
+                            ? "Explosión aérea sobre Puebla."
+                            : "Impacto en superficie."}
+                        </Popup>
+                      </Marker>
+                    )}
+                  </MapContainer>
+                </div>
               </div>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={distanceSliderValue}
-                onChange={(e) => setDistanceSliderValue(Number(e.target.value))}
-                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
-              />
+
+              <div className="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700">
+                <h2 className="text-xl font-bold mb-2 text-violet-500">
+                  Energía Total Liberada:
+                </h2>
+                <p className="text-4xl font-extrabold text-white">
+                  {displayData.totalEnergy}
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-1 pt-3 border-t border-gray-700">
-              <p className="text-xl font-medium">Efecto seleccionado</p>
-              <p className="text-3xl font-bold text-violet-500">
-                {selectedEffect}
-              </p>
-            </div>
+            {/* Columna 2: Detalles del Impacto */}
+            <div className="col-span-1 space-y-5 bg-gray-800 p-6 rounded-xl shadow-xl">
+              <h2 className="text-xl font-bold text-violet-500">
+                Detalles del Impacto a Distancia
+              </h2>
 
-            <div className="min-h-30">{renderEffectDetails()}</div>
+              <div className="space-y-1">
+                <div className="flex justify-between items-center">
+                  <span className="text-xl font-medium">
+                    Distancia del observador
+                  </span>
+                  <span className="text-3xl font-bold text-violet-500">
+                    {displayData.currentDistanceKm} km
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={distanceSliderValue}
+                  onChange={(e) => setDistanceSliderValue(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+              </div>
 
-            <div className="space-y-2 pt-4 border-t border-gray-700">
-              <h3 className="text-xl font-bold text-violet-500">
-                Efectos Sísmicos (a {displayData.currentDistanceKm} km)
-              </h3>
-              <p className="text-4xl font-extrabold text-red-500">
-                MAG: {displayData.seismicDetails.magnitude}
-              </p>
-              <p className="text-base text-gray-400">
-                Magnitud sísmica (Escala Richter):{" "}
-                <span className="font-bold">
-                  {displayData.seismicDetails.richterScale}
-                </span>
-              </p>
-              <p className="text-base text-gray-400">
-                Intensidad Mercalli Modificada:{" "}
-                <span className="font-bold">
-                  {displayData.seismicDetails.mercalliIntensity}
-                </span>
-              </p>
+              <div className="space-y-1 pt-3 border-t border-gray-700">
+                <p className="text-xl font-medium">Efecto seleccionado</p>
+                <p className="text-3xl font-bold text-violet-500">
+                  {selectedEffect}
+                </p>
+              </div>
+
+              <div className="min-h-30">{renderEffectDetails()}</div>
+
+              <div className="space-y-2 pt-4 border-t border-gray-700">
+                <h3 className="text-xl font-bold text-violet-500">
+                  Efectos Sísmicos (a {displayData.currentDistanceKm} km)
+                </h3>
+                <p className="text-4xl font-extrabold text-red-500">
+                  MAG: {displayData.seismicDetails.magnitude}
+                </p>
+                <p className="text-base text-gray-400">
+                  Magnitud sísmica (Escala Richter):{" "}
+                  <span className="font-bold">
+                    {displayData.seismicDetails.richterScale}
+                  </span>
+                </p>
+                <p className="text-base text-gray-400">
+                  Intensidad Mercalli Modificada:{" "}
+                  <span className="font-bold">
+                    {displayData.seismicDetails.mercalliIntensity}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Columna 3: Botones de Fenómeno */}
-          <div className="col-span-1 flex flex-col space-y-4 bg-gray-800 p-6 rounded-xl shadow-xl">
-            <h2 className="text-xl font-bold text-violet-500">
-              Ver Detalles por Fenómeno
-            </h2>
-
-            <div className="space-y-4">
-              {effectButtons.map(renderEffectButton)}
-            </div>
-
-            <button
-              className="mt-6 p-5 text-2xl font-extrabold rounded-xl shadow-2xl transition-all bg-gray-700 hover:bg-gray-600 text-white"
-              onClick={() => navigate("/result")}
-            >
-              Resumen Final
-            </button>
+          {/*Boton de resumen final */}
+          <div>
+             <button
+                className="mt-6 p-5 text-2xl font-extrabold rounded-xl shadow-2xl transition-all bg-gray-700 hover:bg-gray-600 text-white"
+                onClick={() => navigate("/result")}
+              >
+                Resumen Final
+              </button>
           </div>
         </div>
       </div>

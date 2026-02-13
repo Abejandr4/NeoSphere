@@ -4,6 +4,7 @@ import Particles from "../components/Particles";
 import BlurText from "../components/BlurText";
 import { HoverBorderGradient } from "../components/hover-border-gradient";
 import Asteroid from "../assets/img/asteroid_placeholder.png";
+import MeteorShower from "../components/MeteorShower";
 
 function Inicio() {
   const navigate = useNavigate();
@@ -11,17 +12,8 @@ function Inicio() {
   return (
     <div className="relative w-full h-screen bg-black flex justify-center items-center overflow-hidden">
       {/* Background Layer: Particles */}
-      <div className="absolute inset-0 z-0">
-        <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={600}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover={true}
-          alphaParticles={false}
-          disableRotation={false}
-        />
+      <div className="h-full w-full absolute inset-0 z-0">
+        <MeteorShower/>
       </div>
 
       {/* Middle Layer: The Peeking Asteroid */}
