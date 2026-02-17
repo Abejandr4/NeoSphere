@@ -248,3 +248,28 @@ body {
   overflow: hidden;
   background-color: #000010;
 }
+
+/*scrollbar*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    -webkit-appearance: none; /*para evitar que no se muestre en mac*/
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #000000;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #787878;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #ffffff;
+}
