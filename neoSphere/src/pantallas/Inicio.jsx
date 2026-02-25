@@ -1,9 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Particles from "../components/Particles";
 import BlurText from "../components/BlurText";
 import { HoverBorderGradient } from "../components/hover-border-gradient";
-import Asteroid from "../assets/img/asteroid_placeholder.png";
+import Asteroid from "../assets/img/Asteroid_placeholder.png";
 import MeteorShower from "../components/MeteorShower";
 
 function Inicio() {
