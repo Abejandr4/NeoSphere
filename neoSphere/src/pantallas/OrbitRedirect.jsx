@@ -4,7 +4,7 @@ function OrbitRedirect() {
   // useEffect se ejecuta una vez después de que el componente se monta
   useEffect(() => {
     // Redirige al usuario a la URL externa
-    window.location.href = "https://asteroid-db-2nk6.vercel.app/";
+    window.location.href = "https://asteroid-db-q68v.vercel.app/";
   }, []);
 
   return (
