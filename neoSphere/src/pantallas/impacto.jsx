@@ -24,6 +24,20 @@ const MAX_DISTANCE_KM = 500;
 
 // --- CONFIGURACIÓN DE ESTILOS POR EFECTO ---
 const effectStyles = {
+  "Resumen general": {
+    text: "text-red-500",
+    bg: "bg-red-500",
+    accent: "accent-red-500",
+    border: "border-red-500",
+    hex: "#8b5cf6" // Para Leaflet (Circle)
+  },
+  "Pérdidas": {
+    text: "text-cyan-500",
+    bg: "bg-cyan-500",
+    accent: "accent-cyan-500",
+    border: "border-cyan-500",
+    hex: "#8b5cf6" // Para Leaflet (Circle)
+  },
   "Cráter": {
     text: "text-violet-500",
     bg: "bg-violet-500",
@@ -55,10 +69,12 @@ const effectStyles = {
 };
 
 const headerTextsByEffect = {
+  "Pérdidas": "Al momento de impacto, habrían numerosas pérdidas de varios tipos.",
   "Cráter": "Este es el efecto del cráter. ¡Puedes ver en el mapa un círculo que representa el diámetro del impacto!",
   "Onda de Choque": "¡La onda de choque expansiva es destructiva! Se propaga a través de la atmósfera causando daños estructurales.",
   "Retorno de eyecciones": "El material eyectado por el impacto es lanzado a la atmósfera y regresa al suelo cubriendo grandes áreas.",
   "Radiación Térmica": "La radiación térmica se propaga a la velocidad de la luz y puede provocar incendios y quemaduras instantáneas.",
+  "Resumen general" : "Este es un resumen general de todo lo causado por el impacto del meteorito.",
 };
 
 const Impacto = () => {
@@ -76,12 +92,12 @@ const Impacto = () => {
   }, [initialResults, inputs, navigate]);
 
   const [distanceSliderValue, setDistanceSliderValue] = useState(20);
-  const [selectedEffect, setSelectedEffect] = useState("Cráter");
-  const [headerText, setHeaderText] = useState(headerTextsByEffect["Cráter"]);
+  const [selectedEffect, setSelectedEffect] = useState("Pérdidas");
+  const [headerText, setHeaderText] = useState(headerTextsByEffect["Pérdidas"]);
 
   // Obtenemos el estilo activo actual de forma memoizada
   const activeStyle = useMemo(() => 
-    effectStyles[selectedEffect] || effectStyles["Cráter"], 
+    effectStyles[selectedEffect] || effectStyles["Resumen Pérdidas"], 
   [selectedEffect]);
 
   const currentDistanceKm = useMemo(
@@ -181,6 +197,20 @@ const Impacto = () => {
     }
 
     switch (selectedEffect) {
+      case "Pérdidas inmediatas":
+        return (
+          <div className="space-y-1 text-sm pt-2">
+            <p className="font-medium text-red-500 text-lg">
+              ¡Se perderían numerosas vidas y materiales en el impacto!
+            </p>
+            <p className="font-medium text-gray-300">
+              Vidas pérdidas: <span className="font-bold text-white text-base">{displayData.craterDetails.finalDiameter}</span>
+            </p>
+            <p className="font-medium text-gray-300">
+              Diámetro Transitorio: <span className="font-bold text-white text-base">{displayData.craterDetails.transientDiameter}</span>
+            </p>
+          </div>
+        )
       case "Cráter":
         return (
           <div className="space-y-1 text-sm pt-2">
@@ -197,6 +227,7 @@ const Impacto = () => {
               Tipo: <span className="font-bold text-white text-base">{displayData.craterDetails.type}</span>
             </p>
           </div>
+          
         );
       case "Onda de Choque":
         return (
@@ -237,16 +268,32 @@ const Impacto = () => {
             </p>
           </div>
         );
+      case "Resumen general":
+        return (
+           <div className="space-y-1 text-sm pt-2">
+            <p className="font-medium text-red-500 text-lg">
+              ¡Se perderían numerosas vidas y materiales en el impacto!
+            </p>
+            <p className="font-medium text-gray-300">
+              Vidas : <span className="font-bold text-white text-base">{displayData.craterDetails.finalDiameter}</span>
+            </p>
+            <p className="font-medium text-gray-300">
+              Diámetro Transitorio: <span className="font-bold text-white text-base">{displayData.craterDetails.transientDiameter}</span>
+            </p>
+          </div>
+        )
       default:
         return <p className="text-base font-medium mt-2 text-white">Selecciona un efecto.</p>;
     }
   }, [selectedEffect, scenario, crater, airBlast, thermalRadiation, ejecta, burstAltitude, displayData]);
 
   const effectButtons = [
+    { name: "Pérdidas", label: "Pérdidas" },
     { name: "Cráter", label: "Cráter" },
     { name: "Onda de Choque", label: "Onda de Choque" },
     { name: "Retorno de eyecciones", label: "Retorno de eyecciones" },
     { name: "Radiación Térmica", label: "Radiación Térmica" },
+    { name: "Resumen general", label: "Resumen general" }
   ];
 
   const renderEffectButton = ({ name, label }) => {
@@ -289,7 +336,7 @@ const Impacto = () => {
         {/* Sección de Botones */}
         <div className="w-full bg-gray-800/50 p-6 rounded-xl shadow-xl mb-8 border border-gray-700">
           <h2 className={`text-xl font-bold mb-4 transition-colors duration-500 ${activeStyle.text}`}>
-            Ver Detalles por Fenómeno
+            Selecciona un botón para ver más detalles.
           </h2>
           <div className="flex flex-wrap gap-4">
             {effectButtons.map(renderEffectButton)}
@@ -381,7 +428,7 @@ const Impacto = () => {
             className="px-12 py-4 text-2xl font-extrabold rounded-xl shadow-2xl transition-all bg-gray-700 hover:bg-gray-600 hover:scale-105 text-white border-b-4 border-gray-900 active:border-b-0"
             onClick={() => navigate("/result")}
           >
-            RESUMEN FINAL
+            MITIGACIÓN
           </button>
         </div>
       </div>

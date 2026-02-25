@@ -35,11 +35,6 @@ function SlideGallery() {
             <div className="w-300 m-auto pt-20 p-5">
                 <Carousel slides={slides} />
             </div>
-            <HoverBorderGradient 
-                as="button"
-                onClick={() => navigate("/orbita")}>
-                Órbitas de los asteroides
-            </HoverBorderGradient>
         </div>
 
         </div>

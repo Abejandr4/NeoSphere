@@ -51,15 +51,20 @@ function Inicio() {
             as="button"
             onClick={() => navigate("/slide-gallery")}
           >
-            Astroviary
+            Galería
           </HoverBorderGradient>
-
+          <HoverBorderGradient 
+                containerClassName="hover:bg-[#1D0175] rounded-lg transition px-10 py-4 text-xl min-w-[200px]"
+                as="button"
+                onClick={() => navigate("/orbita")}>
+                Órbitas de los asteroides
+          </HoverBorderGradient>
           <HoverBorderGradient
             containerClassName="hover:bg-[#1D0175] rounded-lg transition px-10 py-4 text-xl min-w-[200px]"
             as="button"
             onClick={() => navigate("/skyfallx-game")}
           >
-            Sky Fall X
+            Simulador
           </HoverBorderGradient>
         </div>
       </div>
